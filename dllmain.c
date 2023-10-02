@@ -3,6 +3,7 @@
 #include <ddraw.h>
 #include "hook.h"
 #include "ota.h"
+#include "prota.h"
 
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -25,7 +26,17 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
         hook_patch_iat(game_exe, FALSE, "ddraw.dll", "DirectDrawCreate", (PROC)DirectDrawCreate);
 
-        ota_apply_patches();
+        char mod_name[256] = { 0 };
+        GetPrivateProfileStringA("Preferences", "ModName", "", mod_name, sizeof(mod_name), ".\\totala.ini");
+
+        if (_stricmp(mod_name, "ProTA") == 0)
+        {
+            prota_apply_patches();
+        }
+        else
+        {
+            ota_apply_patches();
+        }
     }
     
     return TRUE;

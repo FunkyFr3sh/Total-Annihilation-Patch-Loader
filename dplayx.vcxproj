@@ -100,12 +100,14 @@
   <ItemGroup>
     <ClInclude Include="hook.h" />
     <ClInclude Include="mods\ota.h" />
-    <ClInclude Include="patch.h" />
+    <ClInclude Include="mods\patch.h" />
+    <ClInclude Include="mods\prota.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="hook.c" />
     <ClCompile Include="mods\ota.c" />
+    <ClCompile Include="mods\prota.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
