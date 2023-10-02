@@ -24,8 +24,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        hook_patch_iat(game_exe, FALSE, "ddraw.dll", "DirectDrawCreate", (PROC)DirectDrawCreate);
-
         char mod_name[256] = { 0 };
         GetPrivateProfileStringA("Preferences", "ModName", "", mod_name, sizeof(mod_name), ".\\totala.ini");
 
@@ -37,6 +35,37 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
         {
             ota_apply_patches();
         }
+
+        /* Actaully you're not allowed to call LoadLibray from DllMain, but the other patches do it and so we must too */
+        HMODULE tdraw_dll = LoadLibraryA("tdraw.dll");
+
+        if (!tdraw_dll)
+        {
+            MessageBoxA(
+                NULL,
+                "tdraw.dll not found, please re-install the Total Annihilation Community Patch.",
+                "Total Annihilation Community Patch",
+                MB_OK);
+
+            exit(1);
+            return FALSE;
+        }
+
+        FARPROC dd_create = GetProcAddress(tdraw_dll, "DirectDrawCreate");
+
+        if (!dd_create)
+        {
+            MessageBoxA(
+                NULL,
+                "Incompatible tdraw.dll found, please re-install the Total Annihilation Community Patch.",
+                "Total Annihilation Community Patch",
+                MB_OK);
+
+            exit(1);
+            return FALSE;
+        }
+
+        hook_patch_iat(game_exe, FALSE, "ddraw.dll", "DirectDrawCreate", (PROC)dd_create);
     }
     
     return TRUE;

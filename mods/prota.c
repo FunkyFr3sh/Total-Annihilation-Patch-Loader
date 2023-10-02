@@ -290,9 +290,9 @@ void prota_apply_patches()
     patch_setbyte(text_base + 0x00007ECE, 0x8B);
     patch_setbyte(text_base + 0x00007ECF, 0xD6);
     patch_setbyte(text_base + 0x00007FA2, 0xA4);
-    //patch_setbyte(text_base + 0x0000DED6, 0x9C); // tdraw overwrites this change
-    //patch_setbyte(text_base + 0x0000DED7, 0x36); // tdraw overwrites this change
-    //patch_setbyte(text_base + 0x0000DED8, 0x01); // tdraw overwrites this change
+    patch_setbyte(text_base + 0x0000DED6, 0x9C); // tdraw overwrites this change
+    patch_setbyte(text_base + 0x0000DED7, 0x36); // tdraw overwrites this change
+    patch_setbyte(text_base + 0x0000DED8, 0x01); // tdraw overwrites this change
     patch_setbyte(text_base + 0x00013EBD, 0x0A);
     patch_setbyte(text_base + 0x00013EBE, 0x49);
     patch_setbyte(text_base + 0x00013EBF, 0x74);
