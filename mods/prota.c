@@ -703,27 +703,26 @@ void prota_apply_patches()
 
     char* rdata_base = (char*)GetModuleHandleA(NULL) + 0x1200; /* start=000FAE00 (mem=004FC000) */
 
-    if (patch_setbyte(text_base + 0x000FB780, 0xD0) != 0x80) DebugBreak();
-    if (patch_setbyte(text_base + 0x000FB781, 0x86) != 0x73) DebugBreak();
-    if (patch_setbyte(text_base + 0x000FBA7F, 0xD4) != 0xC4) DebugBreak();
+    patch_setbyte(rdata_base + 0x000FB780, 0xD0);
+    patch_setbyte(rdata_base + 0x000FB781, 0x86);
+    patch_setbyte(rdata_base + 0x000FBA7F, 0xD4);
 
 
     char* data_base = (char*)GetModuleHandleA(NULL) + 0x1A00; /* start=000FF600 (mem=00501000) */
 
-    if (patch_setbyte(text_base + 0x001005D8, 0x02) != 0x04) DebugBreak();
-    if (patch_setbyte(text_base + 0x001005E4, 0x02) != 0x04) DebugBreak();
-    if (patch_setbyte(text_base + 0x00100ECC, 0x50) != 0x72) DebugBreak();
-    if (patch_setbyte(text_base + 0x00100ECD, 0x72) != 0x65) DebugBreak();
-    if (patch_setbyte(text_base + 0x00100ECE, 0x6F) != 0x76) DebugBreak();
-    if (patch_setbyte(text_base + 0x00100ECF, 0x54) != 0x25) DebugBreak();
-    if (patch_setbyte(text_base + 0x00100ED0, 0x41) != 0x73) DebugBreak();
-    if (patch_setbyte(text_base + 0x001017B4, 0x34) != 0x76) DebugBreak();
-    if (patch_setbyte(text_base + 0x001017B5, 0x2E) != 0x33) DebugBreak();
-    if (patch_setbyte(text_base + 0x001017B6, 0x35) != 0x2E) DebugBreak();
-    if (patch_setbyte(text_base + 0x001017B7, 0x00) != 0x31) DebugBreak();
-    if (patch_setbyte(text_base + 0x00101D38, 0x73) != 0x00) DebugBreak();
-    if (patch_setbyte(text_base + 0x00101D39, 0x50) != 0x00) DebugBreak();
-
+    patch_setbyte(data_base + 0x001005D8, 0x02);
+    patch_setbyte(data_base + 0x001005E4, 0x02);
+    patch_setbyte(data_base + 0x00100ECC, 0x50);
+    patch_setbyte(data_base + 0x00100ECD, 0x72);
+    patch_setbyte(data_base + 0x00100ECE, 0x6F);
+    patch_setbyte(data_base + 0x00100ECF, 0x54);
+    patch_setbyte(data_base + 0x00100ED0, 0x41);
+    patch_setbyte(data_base + 0x001017B4, 0x34);
+    patch_setbyte(data_base + 0x001017B5, 0x2E);
+    patch_setbyte(data_base + 0x001017B6, 0x35);
+    patch_setbyte(data_base + 0x001017B7, 0x00);
+    patch_setbyte(data_base + 0x00101D38, 0x73);
+    patch_setbyte(data_base + 0x00101D39, 0x50);
 }
 
 #pragma comment(linker, "/export:DirectPlayCreate=tplayx.DirectPlayCreate,@1")
