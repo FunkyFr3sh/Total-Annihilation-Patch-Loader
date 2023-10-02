@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.c" />
+    <ClCompile Include="hook.c" />
+    <ClCompile Include="mods\ota.c">
+      <Filter>mods</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hook.h" />
+    <ClInclude Include="patch.h">
+      <Filter>mods</Filter>
+    </ClInclude>
+    <ClInclude Include="mods\ota.h">
+      <Filter>mods</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="mods">
+      <UniqueIdentifier>{a83f9ff5-58db-46ff-9bd4-d60dce75357c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
