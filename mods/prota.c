@@ -15,8 +15,8 @@ void prota_apply_patches()
 
     // Change version # in multiplayer battleroom (all players must match)
     // (0049E9BD)
-    patch_setbyte(0x0049E9C0, 0x04);
-    patch_setbyte(0x0049E9C9, 0x05);
+    patch_setbyte((void*)0x0049E9C0, 0x04);
+    patch_setbyte((void*)0x0049E9C9, 0x05);
 
 
     char* text_base = (char*)GetModuleHandleA(NULL) + 0x0C00; /* start=00000400 (mem=00401000) */
