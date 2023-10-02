@@ -10,6 +10,9 @@ void prota_apply_patches()
     PATCH_SET((void*)0x0050DDFD, "ProTA\x00");
     PATCH_SET((void*)0x00509EB8, "ProTA\x00");
 
+    // Change version string
+    PATCH_SET((void*)0x005031B4, "4.5\x00");
+
 
     char* text_base = (char*)GetModuleHandleA(NULL) + 0x0C00; /* start=00000400 (mem=00401000) */
 
@@ -717,10 +720,6 @@ void prota_apply_patches()
     patch_setbyte(data_base + 0x00100ECE, 0x6F);
     patch_setbyte(data_base + 0x00100ECF, 0x54);
     patch_setbyte(data_base + 0x00100ED0, 0x41);
-    patch_setbyte(data_base + 0x001017B4, 0x34);
-    patch_setbyte(data_base + 0x001017B5, 0x2E);
-    patch_setbyte(data_base + 0x001017B6, 0x35);
-    patch_setbyte(data_base + 0x001017B7, 0x00);
     patch_setbyte(data_base + 0x00101D38, 0x73);
     patch_setbyte(data_base + 0x00101D39, 0x50);
 }
