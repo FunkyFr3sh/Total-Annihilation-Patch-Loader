@@ -29,7 +29,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
         char mod_name[256] = { 0 };
         GetPrivateProfileStringA("Preferences", "ModName", "", mod_name, sizeof(mod_name), ".\\totala.ini");
 
-        if (_stricmp(mod_name, "ProTA") == 0)
+        if (_stricmp(mod_name, "ProTA;") == 0)
         {
             prota_apply_patches();
         }
