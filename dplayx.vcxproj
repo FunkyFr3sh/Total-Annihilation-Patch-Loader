@@ -100,13 +100,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="hook.h" />
     <ClInclude Include="patch.h" />
     <ClInclude Include="patches.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
-    <ClCompile Include="hook.c" />
     <ClCompile Include="patches.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

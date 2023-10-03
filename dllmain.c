@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <ddraw.h>
-#include "hook.h"
+#include "patch.h"
 #include "patches.h"
 
 
@@ -53,7 +53,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        hook_patch_iat(game_exe, FALSE, "ddraw.dll", "DirectDrawCreate", (PROC)dd_create);
+        patch_call((void*)0x0047BFA2, (void*)dd_create);
+        patch_call((void*)0x004B55FB, (void*)dd_create);
     }
     
     return TRUE;

@@ -19,7 +19,7 @@ void patches_apply()
         if (GetPrivateProfileStringA(s, "patch", "", patch, sizeof(patch), ".\\patches.ini") >= 2)
         {
             const unsigned char* pos = patch;
-            unsigned char buf[512];
+            unsigned char buf[sizeof(patch)/2];
             size_t size = 0;
            
             while(*pos) 
