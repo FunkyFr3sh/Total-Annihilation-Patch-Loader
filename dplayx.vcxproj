@@ -64,7 +64,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>mods</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,7 +87,8 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>mods</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,15 +101,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="hook.h" />
-    <ClInclude Include="mods\ota.h" />
-    <ClInclude Include="mods\patch.h" />
-    <ClInclude Include="mods\prota.h" />
+    <ClInclude Include="patch.h" />
+    <ClInclude Include="patches.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="hook.c" />
-    <ClCompile Include="mods\ota.c" />
-    <ClCompile Include="mods\prota.c" />
+    <ClCompile Include="patches.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

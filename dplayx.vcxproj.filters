@@ -3,28 +3,11 @@
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="hook.c" />
-    <ClCompile Include="mods\ota.c">
-      <Filter>mods</Filter>
-    </ClCompile>
-    <ClCompile Include="mods\prota.c">
-      <Filter>mods</Filter>
-    </ClCompile>
+    <ClCompile Include="patches.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hook.h" />
-    <ClInclude Include="mods\ota.h">
-      <Filter>mods</Filter>
-    </ClInclude>
-    <ClInclude Include="mods\patch.h">
-      <Filter>mods</Filter>
-    </ClInclude>
-    <ClInclude Include="mods\prota.h">
-      <Filter>mods</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="mods">
-      <UniqueIdentifier>{a83f9ff5-58db-46ff-9bd4-d60dce75357c}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="patch.h" />
+    <ClInclude Include="patches.h" />
   </ItemGroup>
 </Project>

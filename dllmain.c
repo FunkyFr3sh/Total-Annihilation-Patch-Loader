@@ -1,9 +1,7 @@
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <ddraw.h>
 #include "hook.h"
-#include "ota.h"
-#include "prota.h"
+#include "patches.h"
 
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -24,17 +22,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        char mod_name[256] = { 0 };
-        GetPrivateProfileStringA("Preferences", "ModName", "", mod_name, sizeof(mod_name), ".\\totala.ini");
-
-        if (_stricmp(mod_name, "ProTA;") == 0)
-        {
-            prota_apply_patches();
-        }
-        else
-        {
-            ota_apply_patches();
-        }
+        patches_apply();
 
         /* Actaully you're not allowed to call LoadLibray from DllMain, but the other patches do it and so we must too */
         HMODULE tdraw_dll = LoadLibraryA("tdraw.dll");
