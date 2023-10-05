@@ -22,6 +22,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             patch_setbyte(text_base + 0x000063B4, 0xEB);
             patch_setbyte(text_base + 0x000063B5, 0x40);
         }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
+        }
     }
     else if (_strcmpi(name, "ChangePathfindingSearch") == 0)
     {
@@ -35,6 +40,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             patch_setbyte(text_base + 0x0000DED7, 0x04);
             patch_setbyte(text_base + 0x0000DED8, 0x01);
         }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
+        }
     }
     else if (_strcmpi(name, "DirectxPopupElimination") == 0)
     {
@@ -43,6 +53,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             // DirectX popup elimination
             patch_setbyte(text_base + 0x00025AA5, 0xB0);
             patch_setbyte(text_base + 0x00025AA6, 0x01);
+        }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
         }
     }
     else if (_strcmpi(name, "CursorReclaim") == 0)
@@ -54,6 +69,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             patch_setbyte(text_base + 0x0003DB86, 0x00);
             patch_setbyte(text_base + 0x0003DB87, 0x00);
         }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
+        }
     }
     else if (_strcmpi(name, "DisableKeyLastCommandRepeat") == 0)
     {
@@ -64,6 +84,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             // (00496694)
             patch_setbyte(text_base + 0x00095AE7, 0x27);
         }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
+        }
     }
     else if (_strcmpi(name, "EnableF10Debug") == 0)
     {
@@ -72,6 +97,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             // Enable debug mode via F10 key. Must be in developers mode to activate.
             patch_setbyte(text_base + 0x00095B76, 0x24);
             patch_setbyte(text_base + 0x00095B79, 0x0D);
+        }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
         }
     }
     else if (_strcmpi(name, "IncreaseAtmToFillResources") == 0)
@@ -82,6 +112,11 @@ static int patches_apply_presets(void* user, const char* name, const char* value
             // http://www.tauniverse.com/forum/showthread.php?t=41608&page=6
             // (004FCC7C via 004170C0 function)
             patch_setbyte(rdata_base + 0x000FBA7F, 0xD4);
+        }
+        else if (_strcmpi(value, "No") != 0)
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            return 0;
         }
     }
     else
