@@ -19,8 +19,8 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         {
             // Use custom registry path
             // Replaces "Software\Cavedog Entertainment" with "Software\..."
-            patch_setbytes((void*)0x0050DDFD, value, strlen(value) + 1);
-            patch_setbytes((void*)0x00509EB8, value, strlen(value) + 1);
+            patch_setbytes((void*)0x0050DDFD, (char*)value, strlen(value) + 1);
+            patch_setbytes((void*)0x00509EB8, (char*)value, strlen(value) + 1);
         }
         else
         {
@@ -33,7 +33,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         if (strlen(value) <= 7)
         {
             // Change version string (DebugString...)
-            patch_setbytes((void*)0x005031B4, value, strlen(value) + 1);
+            patch_setbytes((void*)0x005031B4, (char*)value, strlen(value) + 1);
         }
         else
         {
