@@ -13,7 +13,63 @@ static int patches_apply_presets(void* user, const char* name, const char* value
     char* text_base  = (char*)GetModuleHandleA(NULL) + 0x0C00; /* start=00000400 (mem=00401000) */
     char* rdata_base = (char*)GetModuleHandleA(NULL) + 0x1200; /* start=000FAE00 (mem=004FC000) */
 
-    if (_strcmpi(name, "CommanderOrdersNotReset") == 0)
+    if (_strcmpi(name, "RegistryPath") == 0)
+    {
+        if (strlen(value) >= 1 && strlen(value) <= 21)
+        {
+            // Use custom registry path
+            // Replaces "Software\Cavedog Entertainment" with "Software\..."
+            patch_setbytes((void*)0x0050DDFD, value, strlen(value) + 1);
+            patch_setbytes((void*)0x00509EB8, value, strlen(value) + 1);
+        }
+        else
+        {
+            LOG_ERROR("Invalid value length.\nKey = %s, section = Settings.\nValid length 1-21.", name);
+            return 0;
+        }
+    }
+    else if (_strcmpi(name, "GameVersionString") == 0)
+    {
+        if (strlen(value) <= 7)
+        {
+            // Change version string (DebugString...)
+            patch_setbytes((void*)0x005031B4, value, strlen(value) + 1);
+        }
+        else
+        {
+            LOG_ERROR("Value too long.\nKey = %s, section = Settings.\nValid length 0-7.", name);
+            return 0;
+        }
+    }
+    else if (_strcmpi(name, "MultiplayerVersionMajor") == 0)
+    {
+        if (strlen(value) == 1 && isdigit(value[0]))
+        {
+            // Change version # in multiplayer battleroom (all players must match)
+            // (0049E9BD)
+            patch_setbyte((void*)0x0049E9C0, atoi(value));
+        }
+        else
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 0-255.", name);
+            return 0;
+        }
+    }
+    else if (_strcmpi(name, "MultiplayerVersionMinor") == 0)
+    {
+        if (strlen(value) == 1 && isdigit(value[0]))
+        {
+            // Change version # in multiplayer battleroom (all players must match)
+            // (0049E9BD)
+            patch_setbyte((void*)0x0049E9C9, atoi(value));
+        }
+        else
+        {
+            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 0-255.", name);
+            return 0;
+        }
+    }
+    else if (_strcmpi(name, "CommanderOrdersNotReset") == 0)
     {
         if (_strcmpi(value, "Yes") == 0)
         {
