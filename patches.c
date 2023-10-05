@@ -4,9 +4,9 @@
 #include "patch.h"
 #include "patches.h"
 
-#define LOG_ERROR(a, ...) sprintf_s(g_patches_debug, sizeof(g_patches_debug), a, ##__VA_ARGS__);
+#define LOG_ERROR(a, ...) sprintf_s(g_patches_debug_str, sizeof(g_patches_debug_str), a, ##__VA_ARGS__);
 
-char g_patches_debug[512];
+char g_patches_debug_str[512];
 
 static int patches_apply_presets(void* user, const char* name, const char* value)
 {
@@ -255,7 +255,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
 
 static int patches_read_ini(void* user, const char* section, const char* name, const char* value)
 {
-    if (g_patches_debug[0])
+    if (g_patches_debug_str[0])
     {
         return 1; /* We already had an error, so we're not going to continue here */
     }

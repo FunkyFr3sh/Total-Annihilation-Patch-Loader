@@ -33,7 +33,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
                 "Failed to apply game patches. Error between lines %d-%d.\n%s", 
                 line - 1, 
                 line,
-                g_patches_debug);
+                g_patches_debug_str);
             
             MessageBoxA(NULL, msg, "Total Annihilation Community Patch", MB_OK);
 
