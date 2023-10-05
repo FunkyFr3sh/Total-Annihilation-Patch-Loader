@@ -41,7 +41,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        return FALSE;
+        //return FALSE;
         /* Actaully you're not allowed to call LoadLibray from DllMain, but the other patches do it and so we must too */
         HMODULE tdraw_dll = LoadLibraryA("tdraw.dll");
 
