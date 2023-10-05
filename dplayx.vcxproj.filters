@@ -2,12 +2,24 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
-    <ClCompile Include="hook.c" />
     <ClCompile Include="patches.c" />
+    <ClCompile Include="inih\ini.c">
+      <Filter>inih</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="hook.h" />
     <ClInclude Include="patch.h" />
     <ClInclude Include="patches.h" />
+    <ClInclude Include="inih\ini.h">
+      <Filter>inih</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="inih">
+      <UniqueIdentifier>{c3e8fbd1-cc96-4f63-8f05-02fef02aadba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\res.rc" />
   </ItemGroup>
 </Project>

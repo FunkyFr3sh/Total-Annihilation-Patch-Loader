@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdio.h>
 #include <ddraw.h>
 #include "patch.h"
 #include "patches.h"
@@ -22,8 +23,25 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        patches_apply();
+        int line = patches_apply(hinstDLL);
+        if (line != 0)
+        {
+            char msg[512] = { 0 };
+            sprintf_s(
+                msg, 
+                sizeof(msg), 
+                "Failed to apply game patches. Error between lines %d-%d.\n%s", 
+                line - 1, 
+                line,
+                g_patches_debug);
+            
+            MessageBoxA(NULL, msg, "Total Annihilation Community Patch", MB_OK);
 
+            exit(1);
+            return FALSE;
+        }
+
+        return FALSE;
         /* Actaully you're not allowed to call LoadLibray from DllMain, but the other patches do it and so we must too */
         HMODULE tdraw_dll = LoadLibraryA("tdraw.dll");
 
