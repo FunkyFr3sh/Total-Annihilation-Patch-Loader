@@ -183,7 +183,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
 
 static int patches_apply_customs(void* user, const char* section, const char* value)
 {
-    const unsigned char* pos = value;
+    const unsigned char* pos = (const unsigned char*)value;
     unsigned char buf[512];
     size_t size = 0;
 
@@ -245,7 +245,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
         return 0;
     }
 
-    patch_setbytes((char*)offset, buf, size);
+    patch_setbytes((char*)offset, (char*)buf, size);
 
     return 1;
 }

@@ -2,7 +2,7 @@
 #define PATCHES_H 
 
 #define GET_MEM_ADDRESS(a) \
-    ((char*)GetModuleHandleA(NULL) + (a) + (\
+    ((BYTE*)GetModuleHandleA(NULL) + (a) + (\
     (a) >= 0x0FF600 + 0x10A00 ? -(int)GetModuleHandleA(NULL) - (a) : \
     (a) >= 0x0FF600 ? 0x1A00 : \
     (a) >= 0x0FAE00 ? 0x1200 : \
