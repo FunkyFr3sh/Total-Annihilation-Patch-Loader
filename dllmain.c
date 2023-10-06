@@ -4,6 +4,9 @@
 #include "patch.h"
 #include "patches.h"
 
+#define TA_DDRAW_DLL_STR     ((char*)0x004FF618)
+#define TA_MP_VERSION_MAJOR *((BYTE*)0x0049E9C0)
+#define TA_MP_VERSION_MINOR *((BYTE*)0x0049E9C9)
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -17,6 +20,20 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
                 NULL, 
                 "Game version not supported. Please install the official 3.1 patch and then try again.", 
                 "Total Annihilation Community Patch", 
+                MB_OK);
+
+            exit(1);
+            return FALSE;
+        }
+
+        if (strcmp(TA_DDRAW_DLL_STR, "DDRAW.dll") != 0 && (TA_MP_VERSION_MAJOR != 3 || TA_MP_VERSION_MINOR != 1))
+        {
+            MessageBoxA(
+                NULL,
+                "Incompatible game files detected. You cannot mix different versions of the Community Patch.\n"
+                    "Please perform a clean re-install of Total Annihilation 3.1 and then apply "
+                    "the latest Community Patch again.",
+                "Total Annihilation Community Patch",
                 MB_OK);
 
             exit(1);
@@ -42,6 +59,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
         }
 
         //return FALSE;
+        /* Use byte in code cave as new variable to let tdraw.dll know that the dplayx.dll proxy is active */
+        patch_setbyte((void*)0x00401064, 1);
+
         /* Actaully you're not allowed to call LoadLibray from DllMain, but the other patches do it and so we must too */
         HMODULE tdraw_dll = LoadLibraryA("tdraw.dll");
 
