@@ -40,7 +40,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
     }
     else if (_strcmpi(name, "MultiplayerVersionMajor") == 0)
     {
-        if (strlen(value) >= 1 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
+        if (strlen(value) <= 2 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
@@ -54,7 +54,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
     }
     else if (_strcmpi(name, "MultiplayerVersionMinor") == 0)
     {
-        if (strlen(value) >= 1 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
+        if (strlen(value) <= 2 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
