@@ -8,7 +8,7 @@
 
 char g_patches_debug_str[512];
 
-static int patches_apply_presets(void* user, const char* name, const char* value)
+static int patches_apply_presets(void* user, const char* section, const char* name, const char* value)
 {
     if (_strcmpi(name, "RegistryPath") == 0)
     {
@@ -21,7 +21,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else
         {
-            LOG_ERROR("Invalid value length.\nKey = %s, section = Settings.\nValid length 1-21.", name);
+            LOG_ERROR("Invalid value length\n[%s]%s=%s\nValid length 1-21", section, name, value);
             return 0;
         }
     }
@@ -34,7 +34,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else
         {
-            LOG_ERROR("Value too long.\nKey = %s, section = Settings.\nValid length 0-7.", name);
+            LOG_ERROR("Value too long - '%s'\n[%s]%s=%s\nValid length 0-7", value, section, name, value);
             return 0;
         }
     }
@@ -48,7 +48,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 0-255.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-255", value, section, name, value);
             return 0;
         }
     }
@@ -62,7 +62,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 0-255.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-255", value, section, name, value);
             return 0;
         }
     }
@@ -77,7 +77,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -95,7 +95,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -109,7 +109,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -124,7 +124,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -139,7 +139,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -153,7 +153,7 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
@@ -168,13 +168,13 @@ static int patches_apply_presets(void* user, const char* name, const char* value
         }
         else if (_strcmpi(value, "No") != 0)
         {
-            LOG_ERROR("Invalid value.\nKey = %s, section = Settings.\nValid values = 'Yes' and 'No'.", name);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 'Yes' and 'No'", value, section, name, value);
             return 0;
         }
     }
     else
     {
-        LOG_ERROR("Unknown setting.\nKey = %s, section = Settings.", name);
+        LOG_ERROR("Unknown setting - '%s'\n[%s]%s=%s", name, section, name, value);
         return 0;
     }
 
@@ -191,7 +191,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
     {
         if (size >= sizeof(buf))
         {
-            LOG_ERROR("Patch too long (Limit=%d bytes).\nSection = %s.", sizeof(buf), section);
+            LOG_ERROR("Patch too long.\nSection = %s\nValid length = %d bytes", section, sizeof(buf));
             return 0;
         }
 
@@ -203,7 +203,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
 
         if (!isxdigit(pos[1]))
         {
-            LOG_ERROR("Single digit hex is not supported.\nErroneous digit = '%c', Section = %s.", *pos, section);
+            LOG_ERROR("Single digit hex is not supported.\nErroneous digit = '%c'\nSection = %s", *pos, section);
             return 0;
         }
 
@@ -215,7 +215,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
 
     if (offset >= 0x00501000 + 0x0002B000) /* FAIL: reached end of .data section (memory address) */
     {
-        LOG_ERROR("Invalid patch offset, value too high.\nSection = %s.", section);
+        LOG_ERROR("Invalid patch offset, value too high.\nSection = %s", section);
         return 0;
     }
     else if (offset >= 0x00401000) /* .text section start (memory address) */
@@ -224,7 +224,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
     }
     else if (offset >= 0x000FF600 + 0x10A00) /* FAIL: reached end of .data section */
     {
-        LOG_ERROR("Invalid patch offset, value too high.\nSection = %s.", section);
+        LOG_ERROR("Invalid patch offset, value too high.\nSection = %s", section);
         return 0;
     }
     else if (offset >= 0x000FF600) /* .data start=000FF600 (mem=00501000) */
@@ -241,7 +241,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
     }
     else
     {
-        LOG_ERROR("Invalid patch offset, no valid hex string.\nSection = %s.", section);
+        LOG_ERROR("Invalid patch offset, no valid hex string.\nSection = %s", section);
         return 0;
     }
 
@@ -265,7 +265,7 @@ static int patches_read_ini(void* user, const char* section, const char* name, c
 
     if (_strcmpi(section, "Settings") == 0)
     {
-        return patches_apply_presets(user, name, value);
+        return patches_apply_presets(user, section, name, value);
     }
 
     if (_strcmpi(name, "patch") == 0)
@@ -273,7 +273,7 @@ static int patches_read_ini(void* user, const char* section, const char* name, c
         return patches_apply_customs(user, section, value);
     }
 
-    LOG_ERROR("Unknown .ini key name.\nKey = %s.", name);
+    LOG_ERROR("Unknown .ini key name - '%s'\n[%s]%s=", name, section, name);
     return 0;
 }
 
@@ -302,7 +302,7 @@ int patches_apply(HMODULE mod)
 
     if (!ini)
     {
-        LOG_ERROR("Failed to load .ini file from resources.");
+        LOG_ERROR("Patch settings file not found.\nPlease check the resources with Resource Hacker.");
         return -1;
     }
 
