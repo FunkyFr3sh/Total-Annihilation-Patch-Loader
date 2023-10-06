@@ -304,7 +304,10 @@ int patches_apply(HMODULE mod)
     }
 
     if (!ini)
-        return FALSE;
+    {
+        LOG_ERROR("Failed to load .ini file from resources.");
+        return -1;
+    }
 
     int result = ini_parse_string(ini, patches_read_ini, NULL);
         
