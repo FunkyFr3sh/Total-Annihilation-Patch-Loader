@@ -40,7 +40,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
     }
     else if (_strcmpi(name, "MultiplayerVersionMajor") == 0)
     {
-        if (strlen(value) == 1 && isdigit(value[0]))
+        if (strlen(value) >= 1 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
@@ -48,13 +48,13 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         }
         else
         {
-            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-255", value, section, name, value);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-99", value, section, name, value);
             return 0;
         }
     }
     else if (_strcmpi(name, "MultiplayerVersionMinor") == 0)
     {
-        if (strlen(value) == 1 && isdigit(value[0]))
+        if (strlen(value) >= 1 && isdigit(value[0]) && (strlen(value) == 1 || isdigit(value[1])))
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
@@ -62,7 +62,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         }
         else
         {
-            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-255", value, section, name, value);
+            LOG_ERROR("Invalid value - '%s'\n[%s]%s=%s\nValid values = 0-99", value, section, name, value);
             return 0;
         }
     }
