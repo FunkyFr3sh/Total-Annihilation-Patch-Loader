@@ -34,7 +34,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         }
         else
         {
-            LOG_ERROR("Value too long - '%s'\n[%s]%s=%s\nValid length 1-12", value, section, name, value);
+            LOG_ERROR("Invalid value length\n[%s]%s=%s\nValid length 1-12", value, section, name, value);
             return 0;
         }
     }
