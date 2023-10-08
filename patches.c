@@ -40,11 +40,11 @@ static int patches_apply_presets(void* user, const char* section, const char* na
     }
     else if (_strcmpi(name, "MultiplayerVersionMajor") == 0)
     {
-        if (strlen(value) >= 1 && strtol(value, NULL, 10) >= 0 && strtol(value, NULL, 10) <= 127)
+        if (strlen(value) >= 1 && strspn(value, "0123456789") == strlen(value) && strtol(value, NULL, 10) <= 127)
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
-            patch_setbyte((void*)0x0049E9C0, strtol(value, NULL, 10));
+            patch_setbyte((void*)0x0049E9C0, (BYTE)strtol(value, NULL, 10));
         }
         else
         {
@@ -54,11 +54,11 @@ static int patches_apply_presets(void* user, const char* section, const char* na
     }
     else if (_strcmpi(name, "MultiplayerVersionMinor") == 0)
     {
-        if (strlen(value) >= 1 && strtol(value, NULL, 10) >= 0 && strtol(value, NULL, 10) <= 127)
+        if (strlen(value) >= 1 && strspn(value, "0123456789") == strlen(value) && strtol(value, NULL, 10) <= 127)
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
-            patch_setbyte((void*)0x0049E9C9, strtol(value, NULL, 10));
+            patch_setbyte((void*)0x0049E9C9, (BYTE)strtol(value, NULL, 10));
         }
         else
         {
