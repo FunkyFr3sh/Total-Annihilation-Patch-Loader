@@ -265,11 +265,6 @@ static int patches_apply_customs(void* user, const char* section, const char* va
 
 static int patches_read_ini(void* user, const char* section, const char* name, const char* value)
 {
-    if (g_patches_debug_str[0])
-    {
-        return 1; /* We already had an error, so we're not going to continue here */
-    }
-
 #if defined(_DEBUG)
     char debug[256];
     sprintf_s(debug, 256, "[%s]%s=%s\n", section, name, value);
