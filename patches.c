@@ -25,6 +25,19 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             return 0;
         }
     }
+    else if (_strcmpi(name, "ConfigFileName") == 0)
+    {
+        if (strlen(value) >= 1 && strlen(value) <= 12)
+        {
+            // Use custom config file name
+            patch_setbytes((void*)0x005098A3, (char*)value, strlen(value) + 1);
+        }
+        else
+        {
+            LOG_ERROR("Value too long - '%s'\n[%s]%s=%s\nValid length 1-12", value, section, name, value);
+            return 0;
+        }
+    }
     else if (_strcmpi(name, "GameVersionString") == 0)
     {
         if (strlen(value) <= 7)
