@@ -32,6 +32,9 @@
     <None Include="res\patches.ini">
       <Filter>res</Filter>
     </None>
+    <None Include="res\mayhem.ini">
+      <Filter>res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\res.rc">
