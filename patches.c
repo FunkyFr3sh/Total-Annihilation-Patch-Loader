@@ -38,6 +38,32 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             return 0;
         }
     }
+    else if (_strcmpi(name, "Gp3FileName") == 0)
+    {
+        if (strlen(value) >= 1 && strlen(value) <= 11)
+        {
+            // Use custom .GP3 file name
+            patch_setbytes((void*)0x005028CC, (char*)value, strlen(value) + 1);
+        }
+        else
+        {
+            LOG_ERROR("Invalid value length\n[%s]%s=%s\nValid length 1-11", section, name, value);
+            return 0;
+        }
+    }
+    else if (_strcmpi(name, "DownloadPath") == 0)
+    {
+        if (strlen(value) >= 1 && strlen(value) <= 11)
+        {
+            // Use custom download path
+            patch_setbytes((void*)0x00503730, (char*)value, strlen(value) + 1);
+        }
+        else
+        {
+            LOG_ERROR("Invalid value length\n[%s]%s=%s\nValid length 1-11", section, name, value);
+            return 0;
+        }
+    }
     else if (_strcmpi(name, "GameVersionString") == 0)
     {
         if (strlen(value) <= 7)
