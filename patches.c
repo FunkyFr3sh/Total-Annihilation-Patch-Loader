@@ -10,6 +10,11 @@ char g_patches_debug_str[512];
 
 static int patches_apply_presets(void* user, const char* section, const char* name, const char* value)
 {
+    if (!name || !value)
+    {
+        return 1; /* start of a new section (Enabled to get proper line numbers on debug logs) */
+    }
+
     if (_strcmpi(name, "RegistryPath") == 0)
     {
         if (strlen(value) >= 1 && strlen(value) <= 21)
@@ -222,34 +227,6 @@ static int patches_apply_presets(void* user, const char* section, const char* na
 
 static int patches_apply_customs(void* user, const char* section, const char* value)
 {
-    const unsigned char* pos = (const unsigned char*)value;
-    unsigned char buf[512];
-    size_t size = 0;
-
-    while (*pos)
-    {
-        if (size >= sizeof(buf))
-        {
-            LOG_ERROR("Patch too long.\nSection = %s\nValid length = %d bytes", section, sizeof(buf));
-            return 0;
-        }
-
-        if (!isxdigit(*pos))
-        {
-            pos++;
-            continue;
-        }
-
-        if (!isxdigit(pos[1]))
-        {
-            LOG_ERROR("Single digit hex is not supported.\nErroneous digit = '%c'\nSection = %s", *pos, section);
-            return 0;
-        }
-
-        sscanf_s(pos, "%2hhx", &buf[size++]);
-        pos += 2;
-    }
-
     DWORD offset = (DWORD)strtol(section, NULL, 16);
 
     if (offset >= 0x00501000 + 0x0002B000) /* FAIL: reached end of .data section (memory address) */
@@ -284,6 +261,39 @@ static int patches_apply_customs(void* user, const char* section, const char* va
         return 0;
     }
 
+    if (!value)
+    {
+        return 1; /* start of a new section (Enabled to get proper line numbers on debug logs) */
+    }
+
+    const unsigned char* pos = (const unsigned char*)value;
+    unsigned char buf[512];
+    size_t size = 0;
+
+    while (*pos)
+    {
+        if (size >= sizeof(buf))
+        {
+            LOG_ERROR("Patch too long.\nSection = %s\nValid length = %d bytes", section, sizeof(buf));
+            return 0;
+        }
+
+        if (!isxdigit(*pos))
+        {
+            pos++;
+            continue;
+        }
+
+        if (!isxdigit(pos[1]))
+        {
+            LOG_ERROR("Single digit hex is not supported.\nErroneous digit = '%c'\nSection = %s", *pos, section);
+            return 0;
+        }
+
+        sscanf_s(pos, "%2hhx", &buf[size++]);
+        pos += 2;
+    }
+
     patch_setbytes((char*)offset, (char*)buf, size);
 
     return 1;
@@ -302,7 +312,7 @@ static int patches_read_ini(void* user, const char* section, const char* name, c
         return patches_apply_presets(user, section, name, value);
     }
 
-    if (_strcmpi(name, "patch") == 0)
+    if (!name || _strcmpi(name, "patch") == 0)
     {
         return patches_apply_customs(user, section, value);
     }

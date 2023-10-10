@@ -47,8 +47,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             sprintf_s(
                 msg, 
                 sizeof(msg), 
-                "Failed to apply game patches. Error between lines %d-%d.\n%s", 
-                line - 1, 
+                "Failed to apply game patches. Error on line %d.\n%s", 
                 line,
                 g_patches_debug_str);
             
@@ -58,7 +57,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        //return FALSE;
+        return FALSE;
         /* Use byte in code cave as new variable to let tdraw.dll know that the dplayx.dll proxy is active */
         patch_setbyte((void*)0x00401064, 1);
 
