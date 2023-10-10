@@ -57,7 +57,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             return FALSE;
         }
 
-        return FALSE;
+        //return FALSE;
         /* Use byte in code cave as new variable to let tdraw.dll know that the dplayx.dll proxy is active */
         patch_setbyte((void*)0x00401064, 1);
 
