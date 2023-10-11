@@ -7,6 +7,60 @@
 #define LOG_ERROR(a, ...) sprintf_s(g_patches_debug_str, sizeof(g_patches_debug_str), a, ##__VA_ARGS__);
 
 char g_patches_debug_str[512];
+static PATCH_OFFSET g_patches_offsets[4096];
+
+static int patches_setbytes(DWORD offset, char* buf, size_t size)
+{
+    if (offset == 0)
+    {
+        LOG_ERROR("Invalid patch offset.\nOffset = %08X", offset);
+        return 0;
+    }
+
+    if (size == 0)
+    {
+        LOG_ERROR("Empty patch (0 bytes) detected.\nOffset = %08X (%08X)", GET_PHYS_OFFSET(offset), offset);
+        return 0;
+    }
+
+    for (int i = 0; i < sizeof(g_patches_offsets) / sizeof(g_patches_offsets[0]); i++)
+    {
+        if (g_patches_offsets[i].start)
+        {
+            if ((offset            >= g_patches_offsets[i].start && offset            <  g_patches_offsets[i].end) ||
+                (offset + size - 1 >= g_patches_offsets[i].start && offset + size - 1 <  g_patches_offsets[i].end) ||
+                (offset            <  g_patches_offsets[i].start && offset + size - 1 >= g_patches_offsets[i].start))
+            {
+                LOG_ERROR(
+                    "Patch '%08X (%08X)' is conflicting with:\nPatch '%08X (%08X)'", 
+                    GET_PHYS_OFFSET(offset),
+                    offset,
+                    GET_PHYS_OFFSET(g_patches_offsets[i].start),
+                    g_patches_offsets[i].start);
+
+                return 0;
+            }
+
+            continue;
+        }
+        else
+        {
+            g_patches_offsets[i].start = offset;
+            g_patches_offsets[i].end = offset + size;
+
+            patch_setbytes((void*)offset, buf, size);
+            return 1;
+        }
+    }
+
+    LOG_ERROR("Too many patches, limit reached.\nLimit = %d", sizeof(g_patches_offsets) / sizeof(g_patches_offsets[0]));
+    return 0;
+}
+
+static int patches_setbyte(DWORD offset, BYTE value)
+{
+    return patches_setbytes(offset, (char*)&value, 1);
+}
 
 static int patches_apply_presets(void* user, const char* section, const char* name, const char* value)
 {
@@ -21,8 +75,12 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // Use custom registry path
             // Replaces "Software\Cavedog Entertainment" with "Software\..."
-            patch_setbytes((void*)0x0050DDFD, (char*)value, strlen(value) + 1);
-            patch_setbytes((void*)0x00509EB8, (char*)value, strlen(value) + 1);
+
+            if (!patches_setbytes(0x0050DDFD, (char*)value, strlen(value) + 1))
+                return 0;
+
+            if (!patches_setbytes(0x00509EB8, (char*)value, strlen(value) + 1))
+                return 0;
         }
         else
         {
@@ -35,7 +93,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (strlen(value) >= 1 && strlen(value) <= 12)
         {
             // Use custom config file name
-            patch_setbytes((void*)0x005098A3, (char*)value, strlen(value) + 1);
+
+            if (!patches_setbytes(0x005098A3, (char*)value, strlen(value) + 1))
+                return 0;
         }
         else
         {
@@ -48,7 +108,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (strlen(value) >= 1 && strlen(value) <= 11)
         {
             // Use custom .GP3 file name
-            patch_setbytes((void*)0x005028CC, (char*)value, strlen(value) + 1);
+
+            if (!patches_setbytes(0x005028CC, (char*)value, strlen(value) + 1))
+                return 0;
         }
         else
         {
@@ -61,7 +123,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (strlen(value) >= 1 && strlen(value) <= 11)
         {
             // Use custom download path
-            patch_setbytes((void*)0x00503730, (char*)value, strlen(value) + 1);
+
+            if (!patches_setbytes(0x00503730, (char*)value, strlen(value) + 1))
+                return 0;
         }
         else
         {
@@ -74,7 +138,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (strlen(value) <= 7)
         {
             // Change version string (DebugString...)
-            patch_setbytes((void*)0x005031B4, (char*)value, strlen(value) + 1);
+
+            if (!patches_setbytes(0x005031B4, (char*)value, strlen(value) + 1))
+                return 0;
         }
         else
         {
@@ -88,7 +154,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
-            patch_setbyte((void*)0x0049E9C0, (BYTE)strtol(value, NULL, 10));
+
+            if (!patches_setbyte(0x0049E9C0, (BYTE)strtol(value, NULL, 10)))
+                return 0;
         }
         else
         {
@@ -102,7 +170,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // Change version # in multiplayer battleroom (all players must match)
             // (0049E9BD)
-            patch_setbyte((void*)0x0049E9C9, (BYTE)strtol(value, NULL, 10));
+
+            if (!patches_setbyte(0x0049E9C9, (BYTE)strtol(value, NULL, 10)))
+                return 0;
         }
         else
         {
@@ -116,8 +186,12 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // Make AI commander orders NOT reset whenever attacked.
             // (00406FB4)
-            patch_setbyte(GET_MEM_ADDRESS(0x000063B4), 0xEB);
-            patch_setbyte(GET_MEM_ADDRESS(0x000063B5), 0x40);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x000063B4), 0xEB))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x000063B5), 0x40))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -133,9 +207,15 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // Change pathfinding "+search #" to higher initial number (thanks Ti_ and xpoy)
             // http://www.tauniverse.com/forum/showthread.php?t=41608&page=4
             // (0040EAC9)
-            patch_setbyte(GET_MEM_ADDRESS(0x0000DED6), 0x5A);
-            patch_setbyte(GET_MEM_ADDRESS(0x0000DED7), 0x04);
-            patch_setbyte(GET_MEM_ADDRESS(0x0000DED8), 0x01);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED6), 0x5A))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED7), 0x04))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED8), 0x01))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -148,8 +228,12 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (_strcmpi(value, "Yes") == 0)
         {
             // DirectX popup elimination
-            patch_setbyte(GET_MEM_ADDRESS(0x00025AA5), 0xB0);
-            patch_setbyte(GET_MEM_ADDRESS(0x00025AA6), 0x01);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x00025AA5), 0xB0))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x00025AA6), 0x01))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -163,8 +247,12 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // Enable cursor to be "reclaim" when reclaim cursor hovers over any unit
             // Now Commanders can be anonymous on the minimap
-            patch_setbyte(GET_MEM_ADDRESS(0x0003DB86), 0x00);
-            patch_setbyte(GET_MEM_ADDRESS(0x0003DB87), 0x00);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x0003DB86), 0x00))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x0003DB87), 0x00))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -179,7 +267,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // Disable "\" key from being repeat-last-typed-command
             // (such that "\" will be dedicated demo recorder whiteboard key)
             // (00496694)
-            patch_setbyte(GET_MEM_ADDRESS(0x00095AE7), 0x27);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x00095AE7), 0x27))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -192,8 +282,12 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         if (_strcmpi(value, "Yes") == 0)
         {
             // Enable debug mode via F10 key. Must be in developers mode to activate.
-            patch_setbyte(GET_MEM_ADDRESS(0x00095B76), 0x24);
-            patch_setbyte(GET_MEM_ADDRESS(0x00095B79), 0x0D);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x00095B76), 0x24))
+                return 0;
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x00095B79), 0x0D))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -208,7 +302,9 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // Increase "+atm" to fill resources (thanks N72)
             // http://www.tauniverse.com/forum/showthread.php?t=41608&page=6
             // (004FCC7C via 004170C0 function)
-            patch_setbyte(GET_MEM_ADDRESS(0x000FBA7F), 0xD4);
+
+            if (!patches_setbyte(GET_MEM_ADDRESS(0x000FBA7F), 0xD4))
+                return 0;
         }
         else if (_strcmpi(value, "No") != 0)
         {
@@ -300,9 +396,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
         return 0;
     }
 
-    patch_setbytes((char*)offset, (char*)buf, size);
-
-    return 1;
+    return patches_setbytes(offset, (char*)buf, size);
 }
 
 static int patches_read_ini(void* user, const char* section, const char* name, const char* value)
