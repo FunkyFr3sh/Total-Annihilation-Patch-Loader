@@ -294,6 +294,12 @@ static int patches_apply_customs(void* user, const char* section, const char* va
         pos += 2;
     }
 
+    if (size == 0)
+    {
+        LOG_ERROR("Empty patch (0 bytes) detected.\nSection = %s", section);
+        return 0;
+    }
+
     patch_setbytes((char*)offset, (char*)buf, size);
 
     return 1;
