@@ -14,6 +14,16 @@ static inline PROC patch_call(char *src, char *dst)
     return (PROC)(src + 5 + org);
 }
 
+static inline void patch_call_nop(char *src, char *dst)
+{
+    DWORD op = PAGE_EXECUTE_READ;
+    VirtualProtect(src, 6, PAGE_EXECUTE_READWRITE, &op);
+    src[0] = 0xE8;
+    *((DWORD *)(&src[1])) = dst - src - 5;
+    src[5] = 0x90;
+    VirtualProtect(src, 6, op, &op);
+}
+
 static inline void patch_ljmp(char *src, char *dst)
 {
     DWORD op = PAGE_EXECUTE_READ;
@@ -21,6 +31,15 @@ static inline void patch_ljmp(char *src, char *dst)
     src[0] = 0xE9;
     *((DWORD *)(&src[1])) = dst - src - 5;
     VirtualProtect(src, 5, op, &op);
+}
+
+static inline void patch_sjmp(char *src, char *dst)
+{
+    DWORD op = PAGE_EXECUTE_READ;
+    VirtualProtect(src, 2, PAGE_EXECUTE_READWRITE, &op);
+    src[0] = 0xEB;
+    src[1] = dst - src - 2;
+    VirtualProtect(src, 2, op, &op);
 }
 
 static inline void patch_clear(char *start, char value, char *end)
