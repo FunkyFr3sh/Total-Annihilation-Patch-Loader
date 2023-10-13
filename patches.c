@@ -62,6 +62,11 @@ static int patches_setbyte(DWORD offset, BYTE value)
     return patches_setbytes(offset, (char*)&value, 1);
 }
 
+static int patches_setdword(DWORD offset, DWORD value)
+{
+    return patches_setbytes(offset, (char*)&value, 4);
+}
+
 static int patches_apply_presets(void* user, const char* section, const char* name, const char* value)
 {
     if (!name || !value)
@@ -187,10 +192,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // Make AI commander orders NOT reset whenever attacked.
             // (00406FB4)
 
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x000063B4), 0xEB))
-                return 0;
-
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x000063B5), 0x40))
+            if (!patches_setbytes(GET_MEM_ADDRESS(0x000063B4), (char[]) { 0xEB, 0x40 }, 2))
                 return 0;
         }
         else if (_strcmpi(value, "No") != 0)
@@ -208,13 +210,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // http://www.tauniverse.com/forum/showthread.php?t=41608&page=4
             // (0040EAC9)
 
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED6), 0x5A))
-                return 0;
-
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED7), 0x04))
-                return 0;
-
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x0000DED8), 0x01))
+            if (!patches_setdword(GET_MEM_ADDRESS(0x0000DED6), 66650))
                 return 0;
         }
         else if (_strcmpi(value, "No") != 0)
@@ -229,10 +225,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
         {
             // DirectX popup elimination
 
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x00025AA5), 0xB0))
-                return 0;
-
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x00025AA6), 0x01))
+            if (!patches_setbytes(GET_MEM_ADDRESS(0x00025AA5), (char[]) { 0xB0, 0x01 }, 2))
                 return 0;
         }
         else if (_strcmpi(value, "No") != 0)
@@ -248,10 +241,7 @@ static int patches_apply_presets(void* user, const char* section, const char* na
             // Enable cursor to be "reclaim" when reclaim cursor hovers over any unit
             // Now Commanders can be anonymous on the minimap
 
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x0003DB86), 0x00))
-                return 0;
-
-            if (!patches_setbyte(GET_MEM_ADDRESS(0x0003DB87), 0x00))
+            if (!patches_setbytes(GET_MEM_ADDRESS(0x0003DB86), (char[]) { 0x00, 0x00 }, 2))
                 return 0;
         }
         else if (_strcmpi(value, "No") != 0)
