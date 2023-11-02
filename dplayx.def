@@ -1,0 +1,12 @@
+LIBRARY dplayx.dll
+
+EXPORTS
+    DirectPlayCreate       = tplayx.DirectPlayCreate       @1
+    DirectPlayEnumerateA   = tplayx.DirectPlayEnumerateA   @2
+    DirectPlayEnumerateW   = tplayx.DirectPlayEnumerateW   @3
+    DirectPlayLobbyCreateA = tplayx.DirectPlayLobbyCreateA @4
+    DirectPlayLobbyCreateW = tplayx.DirectPlayLobbyCreateW @5
+    gdwDPlaySPRefCount     = tplayx.gdwDPlaySPRefCount     @6
+    DirectPlayEnumerate    = tplayx.DirectPlayEnumerate    @9
+    DllCanUnloadNow        = tplayx.DllCanUnloadNow        PRIVATE
+    DllGetClassObject      = tplayx.DllGetClassObject      PRIVATE

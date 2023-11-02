@@ -352,7 +352,7 @@ static int patches_apply_customs(void* user, const char* section, const char* va
         return 1; /* start of a new section (Enabled to get proper line numbers on debug logs) */
     }
 
-    const unsigned char* pos = (const unsigned char*)value;
+    const char* pos = (const char*)value;
     unsigned char buf[512];
     size_t size = 0;
 
