@@ -125,6 +125,9 @@ if NOT "$(LocalDebuggerWorkingDirectory)" == "$(ProjectDir)" if exist "$(LocalDe
     <ResourceCompile Include="res\res.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="build.cmd" />
+    <None Include="dplayx.def" />
+    <None Include="makefile" />
     <None Include="res\mayhem.ini" />
     <None Include="res\patches.ini" />
     <None Include="res\prota.ini" />

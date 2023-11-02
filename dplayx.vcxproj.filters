@@ -5,6 +5,9 @@
       <UniqueIdentifier>{9b152f9d-a092-42a9-ac47-0594f135a640}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="mingw">
+      <UniqueIdentifier>{de82e1a8-dd59-44ac-8f0a-1b02590fb418}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
@@ -34,6 +37,15 @@
     </None>
     <None Include="res\mayhem.ini">
       <Filter>res</Filter>
+    </None>
+    <None Include="makefile">
+      <Filter>mingw</Filter>
+    </None>
+    <None Include="dplayx.def">
+      <Filter>mingw</Filter>
+    </None>
+    <None Include="build.cmd">
+      <Filter>mingw</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
