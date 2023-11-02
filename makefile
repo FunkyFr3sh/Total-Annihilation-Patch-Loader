@@ -17,9 +17,6 @@ WINDRES     ?= windres
 .PHONY: default
 default: $(TARGET).dll
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
 %.o: %.rc
 	$(WINDRES) -J rc $< $@
 
