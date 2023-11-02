@@ -8,6 +8,9 @@
     <Filter Include="mingw">
       <UniqueIdentifier>{de82e1a8-dd59-44ac-8f0a-1b02590fb418}</UniqueIdentifier>
     </Filter>
+    <Filter Include="other">
+      <UniqueIdentifier>{821148a1-2718-4ce4-bf36-bf241e71cd96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c" />
@@ -46,6 +49,15 @@
     </None>
     <None Include="build.cmd">
       <Filter>mingw</Filter>
+    </None>
+    <None Include=".gitignore">
+      <Filter>other</Filter>
+    </None>
+    <None Include="LICENSE">
+      <Filter>other</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>other</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
